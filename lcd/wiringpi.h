@@ -1,4 +1,4 @@
-/*
+/*Reference: 
  * wiringPi.h:
  *	Arduino like Wiring library for the Raspberry Pi.
  *	Copyright (c) 2012-2017 Gordon Henderson
