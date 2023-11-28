@@ -1,13 +1,12 @@
 CROSS_COMPILE=
-CC      ?= $(CROSS_COMPILE)gcc
-CFLAGS  ?= -g -Werror -Wall
+CC 	?= $(CROSS_COMPILE)gcc
+CFLAGS	?= -g -Werror -Wall
 LDFLAGS ?= -pthread -lrt
-SRC = client.c \
-        lcd.c \
+SRC = lcd.c \
 	wiringpi.c \
-         
+	 
 
-OUTPUT = client
+OUTPUT = lcd
 
 all:
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(OUTPUT) $(SRC) 
