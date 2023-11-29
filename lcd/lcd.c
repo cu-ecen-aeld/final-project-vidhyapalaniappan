@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include "wiringpi.h"
 #include "lcd.h"
 
@@ -20,16 +21,19 @@ void Pulse_Enable()
    digitalWrite (LCD_EN, HIGH) ; 
    delay(0.5); //  1/2 microsecond pause - enable pulse must be > 450ns
    digitalWrite (LCD_EN, LOW) ; 
+   syslog(LOG_DEBUG,"Pulse_Enable\n");
 }
 
 void setcmd_mode()
 {
   digitalWrite (LCD_RS, 0); // set for commands
+  syslog(LOG_DEBUG,"Inside setcmd mode\n");
 }
 
 void setchar_mode()
 {
   digitalWrite (LCD_RS, 1); // set for characters
+  syslog(LOG_DEBUG,"Inside setchar mode\n");
 }
 
 void lcd_byte(char bits)
@@ -83,17 +87,20 @@ void lcd_init()
    lcd_byte(0x0C); // display on, cursor off
    lcd_byte(0x01); // clear screen
    delay(3);       // clear screen is slow!
+   syslog(LOG_DEBUG,"LCD Initialization successful\n");
 }
 
 
 int main(int argc, char *argv [])
 {
+   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
    lcd_init();
    setchar_mode();
    char str[] = "Hello_world :)";
    for(int i=0; str[i] !='\0'; i++)
    {
 	   printchar(str[i],lcd_addr[i]);
+	   syslog(LOG_DEBUG,"%c\n", str[i]);
 	   if(i==63)
 	   {
 		   i=0;
