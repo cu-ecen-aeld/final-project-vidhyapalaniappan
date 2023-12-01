@@ -19,7 +19,7 @@ L4 = 19
 C1 = 12
 C2 = 16
 C3 = 20
-C4 = 21
+#C4 = 21
 
 # The GPIO pin of the column of the key that is currently
 # being held down or -1 if no key is pressed
@@ -50,7 +50,7 @@ GPIO.setup(L4, GPIO.OUT)
 GPIO.setup(C1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(C4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+#GPIO.setup(C4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # This callback registers the key that was pressed
 # if no other key is currently pressed
@@ -66,7 +66,7 @@ def keypadCallback(channel):
 GPIO.add_event_detect(C1, GPIO.RISING, callback=keypadCallback)
 GPIO.add_event_detect(C2, GPIO.RISING, callback=keypadCallback)
 GPIO.add_event_detect(C3, GPIO.RISING, callback=keypadCallback)
-GPIO.add_event_detect(C4, GPIO.RISING, callback=keypadCallback)
+#GPIO.add_event_detect(C4, GPIO.RISING, callback=keypadCallback)
 
 # Sets all lines to a specific state. This is a helper
 # for detecting when the user releases a button
@@ -84,14 +84,14 @@ def checkSpecialKeys():
 
     GPIO.output(L3, GPIO.HIGH)
 
-    if (GPIO.input(C4) == 1):
-        print("Input reset!");
-        pressed = True
+ #   if (GPIO.input(C4) == 1):
+ #       print("Input reset!");
+ #       pressed = True
 
     GPIO.output(L3, GPIO.LOW)
     GPIO.output(L1, GPIO.HIGH)
 
-    if (not pressed and GPIO.input(C4) == 1):
+    if (not pressed):
         if input == secretCode:
             print("Code correct!")
             # TODO: Unlock a door, turn a light on, etc.
@@ -123,8 +123,8 @@ def readLine(line, characters):
         input = input + characters[1]
     if(GPIO.input(C3) == 1):
         input = input + characters[2]
-    if(GPIO.input(C4) == 1):
-        input = input + characters[3]
+ #   if(GPIO.input(C4) == 1):
+ #       input = input + characters[3]
     GPIO.output(line, GPIO.LOW)
 
 try:
@@ -140,10 +140,10 @@ try:
         # Otherwise, just read the input
         else:
             if not checkSpecialKeys():
-                readLine(L1, ["1","2","3","A"])
-                readLine(L2, ["4","5","6","B"])
-                readLine(L3, ["7","8","9","C"])
-                readLine(L4, ["*","0","#","D"])
+                readLine(L1, ["1","2","3"])
+                readLine(L2, ["4","5","6"])
+                readLine(L3, ["7","8","9"])
+                readLine(L4, ["*","0","#"])
                 time.sleep(0.1)
             else:
                 time.sleep(0.1)
