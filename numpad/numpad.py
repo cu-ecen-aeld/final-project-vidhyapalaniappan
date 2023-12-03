@@ -46,16 +46,16 @@ def checkSpecialKeys():
     global input
     pressed = False
 
-    GPIO.output(L3, GPIO.HIGH)
+    GPIO.output(L4, GPIO.HIGH)
 
     if (GPIO.input(C3) == 1):
         print("Input reset!")
         pressed = True
 
-    GPIO.output(L3, GPIO.LOW)
-    GPIO.output(L1, GPIO.HIGH)
+    GPIO.output(L4, GPIO.LOW)
+    GPIO.output(L4, GPIO.HIGH)
 
-    if (not pressed and GPIO.input(C3) == 1):
+    if (not pressed and GPIO.input(C1) == 1):
         if input == secretCode:
             print("Code correct!")
             # TODO: Unlock a door, turn a light on, etc.
@@ -64,7 +64,7 @@ def checkSpecialKeys():
             # TODO: Sound an alarm, send an email, etc.
         pressed = True
 
-    GPIO.output(L3, GPIO.LOW)
+    GPIO.output(L4, GPIO.LOW)
 
     if pressed:
         input = ""
