@@ -79,16 +79,16 @@ def readLine(line, characters):
         	    print(characters[1])
 	if(GPIO.input(C3) == 1):
     	    print(characters[2])
-    if(GPIO.input(C4) == 1):
-    	    print(characters[3])
+   # if(GPIO.input(C4) == 1):
+   #	    print(characters[3])
 	GPIO.output(line, GPIO.LOW)
 
 try:
 	while True:
-    	    readLine(L1, ["1","2","3","A"])
-    	    readLine(L2, ["4","5","6","B"])
-    	    readLine(L3, ["7","8","9","C"])
-    	    readLine(L4, ["*","0","#","D"])
+    	    readLine(L1, ["1","2","3"])
+    	    readLine(L2, ["4","5","6"])
+    	    readLine(L3, ["7","8","9"])
+    	    readLine(L4, ["*","0","#"])
     	    time.sleep(0.1)
 except KeyboardInterrupt:
 	print("\nApplication stopped!")
