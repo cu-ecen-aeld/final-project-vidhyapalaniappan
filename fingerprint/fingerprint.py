@@ -7,7 +7,7 @@ from pyfingerprint.pyfingerprint import PyFingerprint
 
 try:
 
-    f = PyFingerprint("/dev/ttyUSB0", 57600, 0xFFFFFFFF, 0x00000000)
+    f = PyFingerprint("/dev/ttyS0", 57600, 0xFFFFFFFF, 0x00000000)
 
     if f.verifyPassword() == False:
 
@@ -16,7 +16,7 @@ try:
 
 except Exception as e:
 
-    print("Exception message: " + str(e))
+    print("Our Exception message: " + str(e))
 
     #exit(1)
 
