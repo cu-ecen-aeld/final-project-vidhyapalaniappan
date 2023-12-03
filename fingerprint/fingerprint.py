@@ -18,7 +18,7 @@ except Exception as e:
 
     print("Exception message: " + str(e))
 
-    exit(1)
+    #exit(1)
 
 
 def enrollFinger():
