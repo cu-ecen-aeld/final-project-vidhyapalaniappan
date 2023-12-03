@@ -27,22 +27,22 @@ GPIO.setup(C1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-def keypadCallback(channel):
+"""def keypadCallback(channel):
     global keypadPressed
     if keypadPressed == -1:
         keypadPressed = channel
 
 GPIO.add_event_detect(C1, GPIO.RISING, callback=keypadCallback)
 GPIO.add_event_detect(C2, GPIO.RISING, callback=keypadCallback)
-GPIO.add_event_detect(C3, GPIO.RISING, callback=keypadCallback)
+GPIO.add_event_detect(C3, GPIO.RISING, callback=keypadCallback)"""
 
-def setAllLines(state):
+"""def setAllLines(state):
     GPIO.output(L1, state)
     GPIO.output(L2, state)
     GPIO.output(L3, state)
-    GPIO.output(L4, state)
+    GPIO.output(L4, state)"""
 
-def checkSpecialKeys():
+"""def checkSpecialKeys():
     global input
     pressed = False
 
@@ -69,38 +69,25 @@ def checkSpecialKeys():
     if pressed:
         input = ""
 
-    return pressed
+    return pressed"""
 
 def readLine(line, characters):
-    global input
-
-    GPIO.output(line, GPIO.HIGH)
-
-    if(GPIO.input(C1) == 1):
-        input = input + characters[0]
-    if(GPIO.input(C2) == 1):
-        input = input + characters[1]
-    if(GPIO.input(C3) == 1):
-        input = input + characters[2]
-
-    GPIO.output(line, GPIO.LOW)
+	GPIO.output(line, GPIO.HIGH)
+	if(GPIO.input(C1) == 1):
+    	    print(characters[0])
+            
+	if(GPIO.input(C2) == 1):
+        	    print(characters[1])
+	if(GPIO.input(C3) == 1):
+    	    print(characters[2])
+	GPIO.output(line, GPIO.LOW)
 
 try:
-    while True:
-        if keypadPressed != -1:
-            setAllLines(GPIO.HIGH)
-            if GPIO.input(keypadPressed) == 0:
-                keypadPressed = -1
-            else:
-                time.sleep(0.1)
-        else:
-            if not checkSpecialKeys():
-                readLine(L1, ["1", "2", "3"])
-                readLine(L2, ["4", "5", "6"])
-                readLine(L3, ["7", "8", "9"])
-                readLine(L4, ["*", "0", "#"])
-                time.sleep(0.1)
-            else:
-                time.sleep(0.1)
+	while True:
+    	    readLine(L1, ["1","2","3"])
+    	    readLine(L2, ["4","5","6"])
+    	    readLine(L3, ["7","8","9"])
+    	    readLine(L4, ["*","0","#"])
+    	    time.sleep(0.1)
 except KeyboardInterrupt:
-    print("\nApplication stopped!")
+	print("\nApplication stopped!")
