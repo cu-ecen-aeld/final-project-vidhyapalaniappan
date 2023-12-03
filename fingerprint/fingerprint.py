@@ -75,7 +75,7 @@ while 1:
     print("s) find print")
     print("d) delete print")
     print("q) quit")
-    print("----------------")
+    print("----------------")s
     c = input("> ")
 
     if c == "e":
