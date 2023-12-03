@@ -80,9 +80,9 @@ while 1:
 
     if c == "e":
         enrollFinger()
-        
+
     if c == "s":
-	searchFinger()
+        searchFinger()
 	
     if c == "d":
     	print("enter the position of fingerprin")
