@@ -1,20 +1,30 @@
+#@Author: Ashwin Ravindra, Vidhya Palaniappan
+#Date: 12/03/2023
+
+#Credits to Daniel Hertz @ https://maker.pro/raspberry-pi/tutorial/how-to-use-a-keypad-with-a-raspberry-pi-4
+
+#RPi.GPIO is a library that allows you to access the GPIO pins on Raspberry Pi.
 import RPi.GPIO as GPIO
 import time
 
-# Adjust GPIO pin numbers for the 4 rows and 3 columns of the number pad
+# L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
 L1 = 5
 L2 = 6
 L3 = 13
 L4 = 19
 
+# C corresponds to the columns of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
 C1 = 12
 C2 = 16
 C3 = 20
 
 keypadPressed = -1
+
+# Secret code to be entered by the user to be authorized successfully.
 secretCode = "4789"
 input = ""
 
+# Initialize the GPIO pins.
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
@@ -32,16 +42,19 @@ def keypadCallback(channel):
     if keypadPressed == -1:
         keypadPressed = channel
 
+# Add event detection to the GPIO pins.
 GPIO.add_event_detect(C1, GPIO.RISING, callback=keypadCallback)
 GPIO.add_event_detect(C2, GPIO.RISING, callback=keypadCallback)
 GPIO.add_event_detect(C3, GPIO.RISING, callback=keypadCallback)
 
+# Set all the rows based on the state.
 def setAllLines(state):
     GPIO.output(L1, state)
     GPIO.output(L2, state)
     GPIO.output(L3, state)
     GPIO.output(L4, state)
 
+# Function which checks whether the rights keys are pressed.
 def checkSpecialKeys():
     global input
     pressed = False
@@ -58,10 +71,10 @@ def checkSpecialKeys():
     if (not pressed and GPIO.input(C1) == 1):
         if input == secretCode:
             print("Code correct!")
-            # TODO: Unlock a door, turn a light on, etc.
+            # TODO: Display a message on the LCD screen, possibly send the data to a server
         else:
             print("Incorrect code!")
-            # TODO: Sound an alarm, send an email, etc.
+            # TODO: Display a message on the LCD screen, possibly send the data to a server
         pressed = True
 
     GPIO.output(L4, GPIO.LOW)
@@ -71,6 +84,7 @@ def checkSpecialKeys():
 
     return pressed
 
+# Function which reads the input from the keypad.
 def readLine(line, characters):
     global input
 
@@ -88,6 +102,7 @@ def readLine(line, characters):
 
     GPIO.output(line, GPIO.LOW)
 
+# Main function which runs the program infinitely until the user presses Ctrl+Z.
 try:
     while True:
         if keypadPressed != -1:
