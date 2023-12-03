@@ -31,7 +31,7 @@ def enrollFinger():
         pass
     f.convertImage(0x02)
     if ( f.compareCharacteristics() == 0 ):
-        print "Fingers do not match"
+        print ("Fingers do not match")
         time.sleep(2)
         return
 
