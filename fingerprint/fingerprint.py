@@ -1,26 +1,36 @@
+##********************************************************************************************************************************************************
+## File name        : fingerprint.py
+## ​Description      : A basic numpad code to test the functionality of numpad
+## File​ ​Author​ ​Name : Vidhya. PL & Ashwin Ravindra
+## Date             : 12/03/2023
+## Credits          : https://core-electronics.com.au/guides/fingerprint-scanner-raspberry-pi/
+## **********************************************************************************************************************************************************
+
+
+##Including necessary header files##
 import time
 
 from pyfingerprint.pyfingerprint import PyFingerprint
 
 # import RPi.GPIO as gpio
 
-
+#
 try:
-
+#initializes the sensor with specific parameters such as the device path, baud rate, and passwords
     f = PyFingerprint("/dev/ttyS0", 57600, 0xFFFFFFFF, 0x00000000)
-
+# checks if the password verification for the fingerprint sensor fails
     if f.verifyPassword() == False:
 
         raise ValueError("The given fingerprint sensor password is wrong!")
 
-
+#If an exception is raised, it will be caught
 except Exception as e:
 
     print("Our Exception message: " + str(e))
 
     #exit(1)
 
-
+# function handles the process of enrolling a fingerprint
 def enrollFinger():
 
     time.sleep(2)
@@ -75,7 +85,7 @@ def enrollFinger():
 
     time.sleep(2)
 
-
+# function handles the process of searching for a fingerprint
 def searchFinger():
 
     try:
@@ -120,7 +130,7 @@ def searchFinger():
 
         exit(1)
 
-
+# function handles the process of delete a fingerprint
 def deleteFinger(pos):
 
     if f.deleteTemplate(pos) == True:

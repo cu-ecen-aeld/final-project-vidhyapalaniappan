@@ -1,9 +1,20 @@
+/********************************************************************************************************************************************************
+ File name        : lcd.c
+ ​Description      : A basic lcd code to test the functionality of lcd.c
+ File​ ​Author​ ​Name : Vidhya. PL & Ashwin Ravindra
+ Date             : 11/28/2023
+ Credits          : https://github.com/anuh7/final-project-assignment-anuh/blob/main/client/lcd.c
+ **********************************************************************************************************************************************************
+*/
+
+/*Including necessary header files*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <syslog.h>
 #include "wiringpi.h"
 #include "lcd.h"
 
+/*Defining MACROS*/
 #define LCD_EN 24
 #define LCD_RS 25
 #define LCD_D4 4
@@ -16,6 +27,7 @@ static int lcd_addr[] = {0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88,0x
 	               0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0X97, 0x98, 0x99, 0x9A, 0x9B, 0x9C ,0x9D, 0x9E, 0x9F,
 	               0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xDB, 0xDC ,0xDD, 0xDE, 0xDF};
 
+//This function is responsible for generating a pulse on the enable pin of an LCD.
 void Pulse_Enable()
 {
    digitalWrite (LCD_EN, HIGH) ; 
@@ -24,18 +36,21 @@ void Pulse_Enable()
    syslog(LOG_DEBUG,"Pulse_Enable\n");
 }
 
+//This function is used to set the LCD into command mode. It achieves this by setting the RS (Register Select) pin of the LCD (LCD_RS) to LOW
 void setcmd_mode()
 {
   digitalWrite (LCD_RS, 0); // set for commands
   syslog(LOG_DEBUG,"Inside setcmd mode\n");
 }
 
+//This function sets the LCD into character mode. It accomplishes this by setting the RS pin of the LCD (LCD_RS) to HIGH.
 void setchar_mode()
 {
   digitalWrite (LCD_RS, 1); // set for characters
   syslog(LOG_DEBUG,"Inside setchar mode\n");
 }
 
+//This function is responsible for sending a byte of data to an LCD display in 4-bit mode
 void lcd_byte(char bits)
 {
   digitalWrite (LCD_D4,(bits & 0x10)) ;
@@ -51,6 +66,7 @@ void lcd_byte(char bits)
   Pulse_Enable();
 }
 
+//This function is used to display a string of characters on the LCD.
 void lcd_str(char *str)
 {
   while(*str)
@@ -59,6 +75,7 @@ void lcd_str(char *str)
   }
 }
 
+//This function is designed to print a single character c at a specific address (addr) on the LCD display.
 void printchar(char c, int addr)
 {
    setcmd_mode();
@@ -68,6 +85,7 @@ void printchar(char c, int addr)
    lcd_byte(c);
 }
 
+//This function initializes the LCD display. It first sets up the Raspberry Pi GPIO pins for output by using the wiringPiSetupGpio() function
 void lcd_init()
 {
    wiringPiSetupGpio () ; // use BCIM numbering
