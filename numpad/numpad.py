@@ -8,9 +8,9 @@ import RPi.GPIO as GPIO
 import time
 import subprocess
 import ctypes
-import pathlib
+import pathlib2
 
-libname = pathlib.Path().absolute() / "libcmult.so"
+libname = pathlib2.Path().absolute() / "libcmult.so"
 c_lib = ctypes.CDLL(libname)
 
 # L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
