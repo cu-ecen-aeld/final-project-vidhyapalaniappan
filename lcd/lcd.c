@@ -111,11 +111,7 @@ void lcd_init()
 
 int main(int argc, char *argv [])
 {
-<<<<<<< Updated upstream
- /*  openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
-=======
    openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
->>>>>>> Stashed changes
    lcd_init();
    setchar_mode();
    char *str = argv[1];
