@@ -108,7 +108,24 @@ void lcd_init()
    syslog(LOG_DEBUG,"LCD Initialization successful\n");
 }
 
-int main(int argc, char *argv [])
+int display_lcd(char *str)
+{
+   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
+   lcd_init();
+   setchar_mode();
+   for(int i=0; str[i] !='\0'; i++)
+   {
+     printchar(str[i],lcd_addr[i]);
+     syslog(LOG_DEBUG,"%c\n", str[i]);
+     if(i==63)
+     {
+       i=0;
+     }
+   }
+   return 0 ;             
+}
+
+/*int main(int argc, char *argv [])
 {
    openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
    lcd_init();
@@ -124,5 +141,5 @@ int main(int argc, char *argv [])
 	   }
    }
    return 0 ;
-}
+}*/
 
