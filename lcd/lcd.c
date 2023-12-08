@@ -125,9 +125,9 @@ int display_lcd(char *str)
    return 0 ;             
 }
 
-/*int main(int argc, char *argv [])
+int main(int argc, char *argv [])
 {
-   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
+   /*openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
    lcd_init();
    setchar_mode();
    char *str = argv[1];
@@ -139,7 +139,7 @@ int display_lcd(char *str)
 	   {
 		   i=0;
 	   }
-   }
+   }*/
    return 0 ;
-}*/
+}
 
