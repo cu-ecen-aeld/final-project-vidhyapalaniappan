@@ -7,11 +7,11 @@
 import RPi.GPIO as GPIO
 import time
 import subprocess
-import ctypes
-import pathlib2
+#import ctypes
+#import pathlib2
 
-libname = pathlib2.Path().absolute() / "libcmult.so"
-c_lib = ctypes.CDLL(libname)
+#libname = pathlib2.Path().absolute() / "libcmult.so"
+#c_lib = ctypes.CDLL(libname)
 
 # L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
 L1 = 5
@@ -69,6 +69,7 @@ def checkSpecialKeys():
 
     if (GPIO.input(C3) == 1):
         print("Input reset!")
+        subprocess.run(["lcd", "input reset!"])
         pressed = True
 
     GPIO.output(L4, GPIO.LOW)
@@ -77,8 +78,8 @@ def checkSpecialKeys():
     if (not pressed and GPIO.input(C1) == 1):
         if input == secretCode:
             print("Code correct!")
-            #subprocess.run(["lcd", "Code correct!"])
-            c_lib.display_lcd("Code correct!")
+            subprocess.run(["lcd", "Code correct!"])
+            #c_lib.display_lcd("Code correct!")
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         else:
             subprocess.run(["lcd", "Incorrect code!"])
