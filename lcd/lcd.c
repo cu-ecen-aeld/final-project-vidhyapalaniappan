@@ -108,13 +108,12 @@ void lcd_init()
    syslog(LOG_DEBUG,"LCD Initialization successful\n");
 }
 
-
 int main(int argc, char *argv [])
 {
    openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
    lcd_init();
    setchar_mode();
-   char str[] = "Hello_world :)";
+   char *str = argv[1];
    for(int i=0; str[i] !='\0'; i++)
    {
 	   printchar(str[i],lcd_addr[i]);

@@ -6,6 +6,7 @@
 #RPi.GPIO is a library that allows you to access the GPIO pins on Raspberry Pi.
 import RPi.GPIO as GPIO
 import time
+import subprocess
 
 # L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
 L1 = 5
@@ -71,8 +72,10 @@ def checkSpecialKeys():
     if (not pressed and GPIO.input(C1) == 1):
         if input == secretCode:
             print("Code correct!")
+            subprocess.run(["lcd", "Code correct!"])
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         else:
+            subprocess.run(["lcd", "Incorrect code!"])
             print("Incorrect code!")
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         pressed = True
