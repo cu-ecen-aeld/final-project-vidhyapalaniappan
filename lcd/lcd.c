@@ -108,26 +108,14 @@ void lcd_init()
    syslog(LOG_DEBUG,"LCD Initialization successful\n");
 }
 
-int display_lcd(char *str)
-{
-   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
-   lcd_init();
-   setchar_mode();
-   for(int i=0; str[i] !='\0'; i++)
-   {
-     printchar(str[i],lcd_addr[i]);
-     syslog(LOG_DEBUG,"%c\n", str[i]);
-     if(i==63)
-     {
-       i=0;
-     }
-   }
-   return 0 ;             
-}
 
 int main(int argc, char *argv [])
 {
+<<<<<<< Updated upstream
  /*  openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
+=======
+   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
+>>>>>>> Stashed changes
    lcd_init();
    setchar_mode();
    char *str = argv[1];
@@ -139,7 +127,7 @@ int main(int argc, char *argv [])
 	   {
 		   i=0;
 	   }
-   }*/
+   }
    return 0 ;
 }
 
