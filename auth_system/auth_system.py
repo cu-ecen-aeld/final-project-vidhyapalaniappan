@@ -92,6 +92,7 @@ def enrollFinger():
 def searchFinger():
     try:
         print("Waiting for finger...")
+        ubprocess.run(["lcd", "waiting for finger"])
         while f.readImage() == False:
             # pass
             time.sleep(0.5)

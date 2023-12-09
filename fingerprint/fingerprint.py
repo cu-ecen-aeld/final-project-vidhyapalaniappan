@@ -17,7 +17,7 @@ from pyfingerprint.pyfingerprint import PyFingerprint
 #
 try:
 #initializes the sensor with specific parameters such as the device path, baud rate, and passwords
-    f = PyFingerprint("/dev/ttyS0", 57600, 0xFFFFFFFF, 0x00000000)
+    f = PyFingerprint("/dev/ttyUSB0", 57600, 0xFFFFFFFF, 0x00000000)
 # checks if the password verification for the fingerprint sensor fails
     if f.verifyPassword() == False:
 
