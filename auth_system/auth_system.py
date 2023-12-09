@@ -65,6 +65,7 @@ def enrollFinger():
     if positionNumber >= 0:
         print("Template already exists at position #" + str(positionNumber))
         subprocess.run(["lcd", "Finger already registered"])
+        subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         time.sleep(2)
         return
     print("Remove finger...")
@@ -78,12 +79,14 @@ def enrollFinger():
     if f.compareCharacteristics() == 0:
         print("Fingers do not match")
         subprocess.run(["lcd", "Fingers do not match"])
+        subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         time.sleep(2)
         return
     f.createTemplate()
     positionNumber = f.storeTemplate()
     print("Finger enrolled successfully!")
     subprocess.run(["lcd", "Finger enrolled succesfully"])
+    subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
     print("New template position #" + str(positionNumber))
     time.sleep(2)
 
@@ -92,7 +95,7 @@ def enrollFinger():
 def searchFinger():
     try:
         print("Waiting for finger...")
-        ubprocess.run(["lcd", "waiting for finger"])
+        subprocess.run(["lcd", "waiting for finger"])
         while f.readImage() == False:
             # pass
             time.sleep(0.5)
@@ -105,12 +108,14 @@ def searchFinger():
             print("No match found!")
             subprocess.run(["lcd", "Finger print not verified"])
             subprocess.run(["lcd", "Aunthentication failed"])
+            subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
             return
         else:
             print("Found template at position #" + str(positionNumber))
             subprocess.run(["lcd", "Finger print verified"])
             subprocess.run(["lcd", "Aunthentication success"])
+            subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
     except Exception as e:
         print("Operation failed!")
@@ -123,6 +128,7 @@ def deleteFinger(pos):
     if f.deleteTemplate(pos) == True:
         print("Template deleted!")
         subprocess.run(["lcd", "Finger data deleted"])
+        subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         time.sleep(2)
 
 
@@ -155,6 +161,7 @@ def checkSpecialKeys():
     if GPIO.input(C3) == 1:
         print("Input reset!")
         subprocess.run(["lcd", "input reset!"])
+        subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         pressed = True
 
     GPIO.output(L4, GPIO.LOW)
@@ -164,19 +171,23 @@ def checkSpecialKeys():
         if input == registration_key:
             enrollFinger()
         elif input == delete_key:
-            subprocess.run(["lcd", "inside delete func"])
+            subprocess.run(["lcd", "enter the position of fingerprint"])
+            pos = input("> ")
+            deleteFinger(pos)
         elif input == search_key:
             searchFinger()
         elif input == secretCode:
             print("Code correct!")
             subprocess.run(["lcd", "Code correct!"])
             subprocess.run(["lcd", "Aunthentication success!!"])
+            subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             # c_lib.display_lcd("Code correct!")
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         else:
             subprocess.run(["lcd", "Incorrect code!"])
             subprocess.run(["lcd", "Aunthentication failed!!"])
             print("Incorrect code!")
+            subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         pressed = True
 

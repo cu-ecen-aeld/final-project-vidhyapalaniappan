@@ -33,21 +33,18 @@ void Pulse_Enable()
    digitalWrite (LCD_EN, HIGH) ; 
    delay(0.5); //  1/2 microsecond pause - enable pulse must be > 450ns
    digitalWrite (LCD_EN, LOW) ; 
-   syslog(LOG_DEBUG,"Pulse_Enable\n");
 }
 
 //This function is used to set the LCD into command mode. It achieves this by setting the RS (Register Select) pin of the LCD (LCD_RS) to LOW
 void setcmd_mode()
 {
   digitalWrite (LCD_RS, 0); // set for commands
-  syslog(LOG_DEBUG,"Inside setcmd mode\n");
 }
 
 //This function sets the LCD into character mode. It accomplishes this by setting the RS pin of the LCD (LCD_RS) to HIGH.
 void setchar_mode()
 {
   digitalWrite (LCD_RS, 1); // set for characters
-  syslog(LOG_DEBUG,"Inside setchar mode\n");
 }
 
 //This function is responsible for sending a byte of data to an LCD display in 4-bit mode
@@ -118,7 +115,6 @@ int main(int argc, char *argv [])
    for(int i=0; str[i] !='\0'; i++)
    {
 	   printchar(str[i],lcd_addr[i]);
-	   syslog(LOG_DEBUG,"%c\n", str[i]);
 	   if(i==63)
 	   {
 		   i=0;
