@@ -38,19 +38,19 @@ GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 try:
-#initializes the sensor with specific parameters such as the device path, baud rate, and passwords
+    # initializes the sensor with specific parameters such as the device path, baud rate, and passwords
     f = PyFingerprint("/dev/ttyS0", 57600, 0xFFFFFFFF, 0x00000000)
-# checks if the password verification for the fingerprint sensor fails
+    # checks if the password verification for the fingerprint sensor fails
     if f.verifyPassword() == False:
 
         raise ValueError("The given fingerprint sensor password is wrong!")
 
-#If an exception is raised, it will be caught
+# If an exception is raised, it will be caught
 except Exception as e:
 
     print("Our Exception message: " + str(e))
 
-#Function definitions of finger print sensor:
+# Function definitions of finger print sensor:
 # function handles the process of enrolling a fingerprint
 def enrollFinger():
 
@@ -86,7 +86,8 @@ def enrollFinger():
     subprocess.run(["lcd", "Finger enrolled succesfully"])
     print("New template position #" + str(positionNumber))
     time.sleep(2)
-    
+
+
 # function handles the process of searching for a fingerprint
 def searchFinger():
     try:
@@ -115,6 +116,7 @@ def searchFinger():
         print("Exception message: " + str(e))
         exit(1)
 
+
 # function handles the process of delete a fingerprint
 def deleteFinger(pos):
     if f.deleteTemplate(pos) == True:
@@ -122,10 +124,12 @@ def deleteFinger(pos):
         subprocess.run(["lcd", "Finger data deleted"])
         time.sleep(2)
 
+
 def keypadCallback(channel):
     global keypadPressed
     if keypadPressed == -1:
         keypadPressed = channel
+
 
 # Add event detection to the GPIO pins.
 GPIO.add_event_detect(C1, GPIO.RISING, callback=keypadCallback)
@@ -139,6 +143,7 @@ def setAllLines(state):
     GPIO.output(L3, state)
     GPIO.output(L4, state)
 
+
 # Function which checks whether the rights keys are pressed.
 def checkSpecialKeys():
     global input
@@ -146,7 +151,7 @@ def checkSpecialKeys():
 
     GPIO.output(L4, GPIO.HIGH)
 
-    if (GPIO.input(C3) == 1):
+    if GPIO.input(C3) == 1:
         print("Input reset!")
         subprocess.run(["lcd", "input reset!"])
         pressed = True
@@ -154,18 +159,18 @@ def checkSpecialKeys():
     GPIO.output(L4, GPIO.LOW)
     GPIO.output(L4, GPIO.HIGH)
 
-    if (not pressed and GPIO.input(C1) == 1):
+    if not pressed and GPIO.input(C1) == 1:
         if input == registration_key:
             enrollFinger()
         elif input == delete_key:
-            subprocess.run(["lcd", "inside delete func"])            
+            subprocess.run(["lcd", "inside delete func"])
         elif input == search_key:
-            searchFinger()        
+            searchFinger()
         elif input == secretCode:
             print("Code correct!")
             subprocess.run(["lcd", "Code correct!"])
             subprocess.run(["lcd", "Aunthentication success!!"])
-            #c_lib.display_lcd("Code correct!")
+            # c_lib.display_lcd("Code correct!")
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         else:
             subprocess.run(["lcd", "Incorrect code!"])
@@ -181,29 +186,31 @@ def checkSpecialKeys():
 
     return pressed
 
+
 # Function which reads the input from the keypad.
 def readLine(line, characters):
     global input
 
     GPIO.output(line, GPIO.HIGH)
 
-    if(GPIO.input(C1) == 1):
+    if GPIO.input(C1) == 1:
         input = input + characters[0]
         print(characters[0])
-    if(GPIO.input(C2) == 1):
+    if GPIO.input(C2) == 1:
         input = input + characters[1]
         print(characters[1])
-    if(GPIO.input(C3) == 1):
+    if GPIO.input(C3) == 1:
         print(characters[2])
         input = input + characters[2]
 
     GPIO.output(line, GPIO.LOW)
 
+
 # Main function which runs the program infinitely until the user presses Ctrl+Z.
 try:
     subprocess.run(["lcd", "Welcome!"])
     subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
-    
+
     while True:
         if keypadPressed != -1:
             setAllLines(GPIO.HIGH)
@@ -211,7 +218,7 @@ try:
                 keypadPressed = -1
             else:
                 time.sleep(0.1)
-        if:
+        else:
             if not checkSpecialKeys():
                 readLine(L1, ["1", "2", "3"])
                 readLine(L2, ["4", "5", "6"])
