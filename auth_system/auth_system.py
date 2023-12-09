@@ -158,7 +158,7 @@ def checkSpecialKeys():
         if input == registration_key:
             enrollFinger()
         elif input == delete_key:
-            #deleteFinger(pos)
+            subprocess.run(["lcd", "inside delete func"])            
         elif input == search_key:
             searchFinger()        
         elif input == secretCode:
