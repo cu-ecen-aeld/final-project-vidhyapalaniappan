@@ -65,6 +65,7 @@ def enrollFinger():
     if positionNumber >= 0:
         print("Template already exists at position #" + str(positionNumber))
         subprocess.run(["lcd", "Finger already registered"])
+        time.sleep(2)
         subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         time.sleep(2)
         return
@@ -79,6 +80,7 @@ def enrollFinger():
     if f.compareCharacteristics() == 0:
         print("Fingers do not match")
         subprocess.run(["lcd", "Fingers do not match"])
+        time.sleep(2)
         subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         time.sleep(2)
         return
@@ -86,6 +88,7 @@ def enrollFinger():
     positionNumber = f.storeTemplate()
     print("Finger enrolled successfully!")
     subprocess.run(["lcd", "Finger enrolled succesfully"])
+    time.sleep(2)
     subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
     print("New template position #" + str(positionNumber))
     time.sleep(2)
@@ -107,14 +110,18 @@ def searchFinger():
         if positionNumber == -1:
             print("No match found!")
             subprocess.run(["lcd", "Finger print not verified"])
+            time.sleep(2)
             subprocess.run(["lcd", "Aunthentication failed"])
+            time.sleep(2)
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
             return
         else:
             print("Found template at position #" + str(positionNumber))
             subprocess.run(["lcd", "Finger print verified"])
+            time.sleep(2)
             subprocess.run(["lcd", "Aunthentication success"])
+            time.sleep(2)
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
     except Exception as e:
@@ -128,6 +135,7 @@ def deleteFinger(pos):
     if f.deleteTemplate(pos) == True:
         print("Template deleted!")
         subprocess.run(["lcd", "Finger data deleted"])
+        time.sleep(2)
         subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         time.sleep(2)
 
@@ -161,6 +169,7 @@ def checkSpecialKeys():
     if GPIO.input(C3) == 1:
         print("Input reset!")
         subprocess.run(["lcd", "input reset!"])
+        time.sleep(2)
         subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
         pressed = True
 
@@ -185,13 +194,17 @@ def checkSpecialKeys():
         elif input == secretCode:
             print("Code correct!")
             subprocess.run(["lcd", "Code correct!"])
+            time.sleep(2)
             subprocess.run(["lcd", "Aunthentication success!!"])
+            time.sleep(2)
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             # c_lib.display_lcd("Code correct!")
             # TODO: Display a message on the LCD screen, possibly send the data to a server
         else:
             subprocess.run(["lcd", "Incorrect code!"])
+            time.sleep(2)
             subprocess.run(["lcd", "Aunthentication failed!!"])
+            time.sleep(2)
             print("Incorrect code!")
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             # TODO: Display a message on the LCD screen, possibly send the data to a server
@@ -237,11 +250,12 @@ def checkLine(line, characters):
         position = characters[2]
 
     GPIO.output(line, GPIO.LOW)
-    return position
+    return int(position)
 
 # Main function which runs the program infinitely until the user presses Ctrl+Z.
 try:
     subprocess.run(["lcd", "Welcome!"])
+    time.sleep(2)
     subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
 
     while True:
