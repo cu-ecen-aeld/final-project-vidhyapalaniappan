@@ -131,7 +131,14 @@ def searchFinger():
 
 
 # function handles the process of delete a fingerprint
-def deleteFinger(pos):
+def deleteFinger():
+    while True:
+        pos = checkLine(L1, ["1", "2", "3"])
+        pos = checkLine(L2, ["4", "5", "6"])
+        pos = checkLine(L3, ["7", "8", "9"])
+        #pos = checkLine(L4, ["*", "0", "#"])
+        if not pos == -1:
+            break; 
     if f.deleteTemplate(pos) == True:
         print("Template deleted!")
         subprocess.run(["lcd", "Finger data deleted"])
@@ -181,14 +188,7 @@ def checkSpecialKeys():
             enrollFinger()
         elif input == delete_key:
             subprocess.run(["lcd", "enter the position of fingerprint"])
-            while True:
-                pos = checkLine(L1, ["1", "2", "3"])
-                pos = checkLine(L2, ["4", "5", "6"])
-                pos = checkLine(L3, ["7", "8", "9"])
-                pos = checkLine(L4, ["*", "0", "#"])
-                if not pos == -1:
-                    break; 
-            deleteFinger(pos)
+            deleteFinger()
         elif input == search_key:
             searchFinger()
         elif input == secretCode:
