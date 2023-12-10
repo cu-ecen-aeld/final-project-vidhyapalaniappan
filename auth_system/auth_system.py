@@ -134,9 +134,12 @@ def searchFinger():
 def deleteFinger():
     while True:
         pos = checkLine(L1, ["1", "2", "3"])
+        if not pos == -1:
+            break; 
         pos = checkLine(L2, ["4", "5", "6"])
+        if not pos == -1:
+            break; 
         pos = checkLine(L3, ["7", "8", "9"])
-        #pos = checkLine(L4, ["*", "0", "#"])
         if not pos == -1:
             break; 
     if f.deleteTemplate(pos) == True:
