@@ -225,8 +225,7 @@ def readLine(line, characters):
 
 # Function which reads the input from the keypad.
 def checkLine(line, characters):
-    global position = -1
-
+    position = -1
     GPIO.output(line, GPIO.HIGH)
 
     if(GPIO.input(C1) == 1):
