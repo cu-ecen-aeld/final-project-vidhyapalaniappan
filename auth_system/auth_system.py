@@ -172,7 +172,13 @@ def checkSpecialKeys():
             enrollFinger()
         elif input == delete_key:
             subprocess.run(["lcd", "enter the position of fingerprint"])
-            pos = input("> ")
+            while True:
+                pos = checkLine(L1, ["1", "2", "3"])
+                pos = checkLine(L2, ["4", "5", "6"])
+                pos = checkLine(L3, ["7", "8", "9"])
+                pos = checkLine(L4, ["*", "0", "#"])
+                if not pos == -1:
+                    break; 
             deleteFinger(pos)
         elif input == search_key:
             searchFinger()
@@ -217,6 +223,22 @@ def readLine(line, characters):
 
     GPIO.output(line, GPIO.LOW)
 
+# Function which reads the input from the keypad.
+def checkLine(line, characters):
+    global position = -1
+
+    GPIO.output(line, GPIO.HIGH)
+
+    if(GPIO.input(C1) == 1):
+        position = characters[0]
+    if(GPIO.input(C2) == 1):
+        position = characters[1]
+    if(GPIO.input(C3) == 1):
+        print(characters[2])
+        position = characters[2]
+
+    GPIO.output(line, GPIO.LOW)
+    return position
 
 # Main function which runs the program infinitely until the user presses Ctrl+Z.
 try:
