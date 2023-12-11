@@ -16,7 +16,7 @@ PORT = 65432  # The port used by the server
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    s.sendall("Hello from client")
+    s.sendall(b"Hello from client")
     data = s.recv(1024)
     
 # L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
