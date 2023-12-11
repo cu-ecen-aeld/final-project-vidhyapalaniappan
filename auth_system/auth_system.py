@@ -2,8 +2,23 @@ import RPi.GPIO as GPIO
 import time
 import subprocess
 import time
+
+#TCP connection based client application in Python
+import socket
+import sys
 from pyfingerprint.pyfingerprint import PyFingerprint
 
+# Create a TCP/IP socket
+# echo-client.py
+
+HOST = "169.254.59.104"  # The server's hostname or IP address
+PORT = 65432  # The port used by the server
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall("Hello from client")
+    data = s.recv(1024)
+    
 # L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
 L1 = 5
 L2 = 6
@@ -112,6 +127,7 @@ def searchFinger():
             subprocess.run(["lcd", "Finger print not verified"])
             time.sleep(2)
             subprocess.run(["lcd", "Aunthentication failed"])
+            s.sendall(b"Aunthentication failed from client")
             time.sleep(2)
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
@@ -122,6 +138,7 @@ def searchFinger():
             time.sleep(2)
             subprocess.run(["lcd", "Aunthentication success"])
             time.sleep(2)
+            s.sendall(b"Aunthentication success from client")
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
     except Exception as e:
@@ -199,6 +216,7 @@ def checkSpecialKeys():
             subprocess.run(["lcd", "Code correct!"])
             time.sleep(2)
             subprocess.run(["lcd", "Aunthentication success!!"])
+            s.sendall(b"Aunthentication success from client")
             time.sleep(2)
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             # c_lib.display_lcd("Code correct!")
@@ -207,6 +225,7 @@ def checkSpecialKeys():
             subprocess.run(["lcd", "Incorrect code!"])
             time.sleep(2)
             subprocess.run(["lcd", "Aunthentication failed!!"])
+            s.sendall(b"Aunthentication failed from client")
             time.sleep(2)
             print("Incorrect code!")
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
