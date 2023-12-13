@@ -1,23 +1,28 @@
-import RPi.GPIO as GPIO
-import time
-import subprocess
-import time
+##********************************************************************************************************************************************************
+## File name        : auth_system.py
+## ​Description      : Code to integrate LCD, numpad and fingerprint sesnor 
+## File​ ​Author​ ​Name : Vidhya. PL & Ashwin Ravindra
+## Date             : 12/13/2023
+## **********************************************************************************************************************************************************
+
+##Importing the necessary header files
+import RPi.GPIO as GPIO    #for numpad
+import time                #for time sleeping
+import subprocess          #to call a C function from python code
 
 #TCP connection based client application in Python
 import socket
 import sys
-from pyfingerprint.pyfingerprint import PyFingerprint
+from pyfingerprint.pyfingerprint import PyFingerprint   #for fingerprint
 
-# Create a TCP/IP socket
-# echo-client.py
-
+# Creating a TCP/IP socket
 HOST = "169.254.59.104"  # The server's hostname or IP address
 PORT = 65432  # The port used by the server
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b"Hello from client")
-    data = s.recv(1024)
+    s.connect((HOST, PORT))                 #connecting to the host
+    s.sendall(b"Hello from client")         #send back to client
+    data = s.recv(1024)                     #recieve data from client
     
 # L corresponds to the rows of the keypad which are connected to respective GPIO pins on the Raspberry Pi.
 L1 = 5
@@ -65,17 +70,17 @@ except Exception as e:
 
     print("Our Exception message: " + str(e))
 
+
 # Function definitions of finger print sensor:
 # function handles the process of enrolling a fingerprint
 def enrollFinger():
-
     time.sleep(2)
     print("Waiting for finger...")
-    subprocess.run(["lcd", "Place finger on sensor"])
+    subprocess.run(["lcd", "Place finger on sensor"])  #printing on LCD
     while f.readImage() == False:
         pass
     f.convertImage(0x01)
-    result = f.searchTemplate()
+    result = f.searchTemplate()     #checking if template already exists
     positionNumber = result[0]
     if positionNumber >= 0:
         print("Template already exists at position #" + str(positionNumber))
@@ -88,11 +93,11 @@ def enrollFinger():
     subprocess.run(["lcd", "plz remove finger now"])
     time.sleep(2)
     print("Waiting for same finger again...")
-    subprocess.run(["lcd", "Place same finger again"])
+    subprocess.run(["lcd", "Place same finger again"])  
     while f.readImage() == False:
         pass
     f.convertImage(0x02)
-    if f.compareCharacteristics() == 0:
+    if f.compareCharacteristics() == 0:  #checking if the enroll of fingerprint match
         print("Fingers do not match")
         subprocess.run(["lcd", "Fingers do not match"])
         time.sleep(2)
@@ -100,7 +105,7 @@ def enrollFinger():
         time.sleep(2)
         return
     f.createTemplate()
-    positionNumber = f.storeTemplate()
+    positionNumber = f.storeTemplate()     #storing the new fingerprint in database
     print("Finger enrolled successfully!")
     subprocess.run(["lcd", "Finger enrolled succesfully"])
     time.sleep(2)
@@ -119,10 +124,10 @@ def searchFinger():
             time.sleep(0.5)
             return
         f.convertImage(0x01)
-        result = f.searchTemplate()
+        result = f.searchTemplate()       #searching if the finger print already exsists
         positionNumber = result[0]
-        accuracyScore = result[1]
-        if positionNumber == -1:
+        accuracyScore = result[1] 
+        if positionNumber == -1:          #fingerorint is not found
             print("No match found!")
             subprocess.run(["lcd", "Finger print not verified"])
             time.sleep(2)
@@ -136,7 +141,7 @@ def searchFinger():
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
             return
-        else:
+        else:                              #fingerprint matches
             print("Found template at position #" + str(positionNumber))
             subprocess.run(["lcd", "Finger print verified"])
             time.sleep(2)
@@ -149,15 +154,15 @@ def searchFinger():
                 data = c.recv(1024)
             subprocess.run(["lcd", "0-reg; 1-delete; 2-search"])
             time.sleep(2)
-    except Exception as e:
+    except Exception as e:       #Checking if any exception occured
         print("Operation failed!")
         print("Exception message: " + str(e))
         exit(1)
 
 
-# function handles the process of delete a fingerprint
+# function handles the process of deleting a fingerprint
 def deleteFinger():
-    while True:
+    while True:                           #this while loop gets the position input from numpad 
         pos = checkLine(L1, ["1", "2", "3"])
         if not pos == -1:
             break; 
@@ -167,7 +172,7 @@ def deleteFinger():
         pos = checkLine(L3, ["7", "8", "9"])
         if not pos == -1:
             break; 
-    if f.deleteTemplate(pos) == True:
+    if f.deleteTemplate(pos) == True:          #deleting the fingerprint at pos number
         print("Template deleted!")
         subprocess.run(["lcd", "Finger data deleted"])
         time.sleep(2)
@@ -212,14 +217,14 @@ def checkSpecialKeys():
     GPIO.output(L4, GPIO.HIGH)
 
     if not pressed and GPIO.input(C1) == 1:
-        if input == registration_key:
+        if input == registration_key:      #if 0 is pressed, a new fingerprint can be registered
             enrollFinger()
-        elif input == delete_key:
+        elif input == delete_key:          #if 1 is pressed, an existing fingerprint can be deleted
             subprocess.run(["lcd", "enter the position of fingerprint"])
             deleteFinger()
         elif input == search_key:
             searchFinger()
-        elif input == secretCode:
+        elif input == secretCode:          #if input from numpad is entered, it will compare with secret code
             print("Code correct!")
             subprocess.run(["lcd", "Code correct!"])
             time.sleep(2)
@@ -256,7 +261,7 @@ def checkSpecialKeys():
     return pressed
 
 
-# Function which reads the input from the keypad.
+# Function which reads multiple digit input from the keypad.
 def readLine(line, characters):
     global input
 
@@ -274,7 +279,7 @@ def readLine(line, characters):
 
     GPIO.output(line, GPIO.LOW)
 
-# Function which reads the input from the keypad.
+# Function which reads the one digit input from the keypad 
 def checkLine(line, characters):
     position = -1
     GPIO.output(line, GPIO.HIGH)
