@@ -108,14 +108,14 @@ void lcd_init()
 
 int main(int argc, char *argv [])
 {
-   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);
-   lcd_init();
+   openlog(NULL, LOG_CONS | LOG_PID | LOG_PERROR, LOG_USER);   //opening syslog
+   lcd_init();            //initializing lcd
    setchar_mode();
    char *str = argv[1];
-   for(int i=0; str[i] !='\0'; i++)
+   for(int i=0; str[i] !='\0'; i++)       //this for loop iterates through the input string
    {
-	   printchar(str[i],lcd_addr[i]);
-	   if(i==63)
+	   printchar(str[i],lcd_addr[i]);   //printing each character on lcd
+	   if(i==63) 
 	   {
 		   i=0;
 	   }
