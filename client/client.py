@@ -5,7 +5,6 @@ import sys
 import time
 
 # Create a TCP/IP socket
-# echo-client.py
 
 HOST = "169.254.59.104"  # The server's hostname or IP address
 PORT = 65432  # The port used by the server

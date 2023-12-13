@@ -1,6 +1,6 @@
 ##********************************************************************************************************************************************************
 ## File name        : server.py
-## ​Description      : Code to integrate LCD, numpad and fingerprint sesnor 
+## ​Description      : TCP connection based server application in Python
 ## File​ ​Author​ ​Name : Vidhya. PL & Ashwin Ravindra
 ## Date             : 12/13/2023
 ## **********************************************************************************************************************************************************
